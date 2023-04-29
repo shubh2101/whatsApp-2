@@ -1,4 +1,12 @@
-import { addDoc, collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
 import { db } from "./firebase";
 
 export const addUsers = async (email, lastSeen, photoUrl, userId) => {
@@ -14,6 +22,7 @@ export const addUsers = async (email, lastSeen, photoUrl, userId) => {
 export const addChatUsers = async (chatUsers) => {
   try {
     await addDoc(collection(db, "chats"), { users: chatUsers });
+    console.log("Document written chat added successfully");
   } catch (error) {
     throw new Error(error);
   }
@@ -25,10 +34,7 @@ export const chatAlreadyExists = async (reciepientEmail) => {
     where("users", "array-contains", reciepientEmail)
   );
   const querySnapshot = await getDocs(q);
-  let doesExist = querySnapshot.docs.find(
-    (doc) =>
-      doc.data().users.find((user) => user === reciepientEmail)?.length > 0
+  return querySnapshot.docs.some((doc) =>
+    doc.data().users.includes(reciepientEmail)
   );
-
-  return !!doesExist;
 };
