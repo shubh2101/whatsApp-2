@@ -6,6 +6,13 @@ import ChatIcon from "@mui/icons-material/Chat";
 import SearchIcon from "@mui/icons-material/Search";
 
 function SideBar() {
+  const createChat = () => {
+    const input = prompt(
+      "Please enter an email address for the user you wish to chat with"
+    );
+    if (!input) return null;
+  };
+
   return (
     <Container>
       <Header>
@@ -23,7 +30,7 @@ function SideBar() {
         <SearchIcon />
         <SearchInput placeholder="Search in chats" />
       </Search>
-      <SideBarButton>Start a new chat</SideBarButton>
+      <SideBarButton onClick={createChat}>Start a new chat</SideBarButton>
     </Container>
   );
 }
