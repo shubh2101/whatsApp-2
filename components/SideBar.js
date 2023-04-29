@@ -7,17 +7,25 @@ import SearchIcon from "@mui/icons-material/Search";
 import * as EmailValidator from "email-validator";
 import { addChatUsers, chatAlreadyExists } from "@/firebase-calls";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "@/firebase";
+import { auth, db } from "@/firebase";
+import { collection, query, where } from "firebase/firestore";
+import { useCollection } from 'react-firebase-hooks/firestore';
+import Chat from "./Chat";
 
 function SideBar() {
   const [user] = useAuthState(auth);
+  const userChatRef = query(
+    collection(db, "chats"),
+    where("users", "array-contains", user.email)
+  );
+  const [chatSnapshot] = useCollection(userChatRef)
 
   const createChat = async () => {
     const input = prompt(
       "Please enter an email address for the user you wish to chat with"
     );
 
-    const isChatExists = await chatAlreadyExists(input);
+    const isChatExists = await chatAlreadyExists(user.email, input);
 
     if (!input) return null;
 
@@ -51,6 +59,9 @@ function SideBar() {
         <SearchInput placeholder="Search in chats" />
       </Search>
       <SideBarButton onClick={createChat}>Start a new chat</SideBarButton>
+      {chatSnapshot?.docs.map((chat)=> (
+        <Chat key={chat.id} id ={chat.id} users={chat.data().users} />
+      ))}
     </Container>
   );
 }

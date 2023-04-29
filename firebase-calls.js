@@ -28,10 +28,10 @@ export const addChatUsers = async (chatUsers) => {
   }
 };
 
-export const chatAlreadyExists = async (reciepientEmail) => {
+export const chatAlreadyExists = async (userEmail, reciepientEmail) => {
   const q = query(
     collection(db, "chats"),
-    where("users", "array-contains", reciepientEmail)
+    where("users", "array-contains", userEmail)
   );
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.some((doc) =>
