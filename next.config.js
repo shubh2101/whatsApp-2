@@ -7,6 +7,9 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+  images:{
+    domains:['assets.stickpng.com']
+    }
 }
 
 module.exports = nextConfig
