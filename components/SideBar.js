@@ -5,9 +5,10 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ChatIcon from "@mui/icons-material/Chat";
 import SearchIcon from "@mui/icons-material/Search";
 import * as EmailValidator from "email-validator";
-import { addChatUsers, updateChatUsers } from "@/firebase-calls";
+import { addChatUsers, chatAlreadyExists } from "@/firebase-calls";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase";
+// import {useCollection} from "react-firebase-hooks/firestore"
 
 function SideBar() {
   const [user] = useAuthState(auth);
@@ -16,7 +17,11 @@ function SideBar() {
       "Please enter an email address for the user you wish to chat with"
     );
     if (!input) return null;
-    if (EmailValidator.validate(input)) {
+    if (
+      EmailValidator.validate(input) &&
+      !chatAlreadyExists(input) &&
+      input !== user.email
+    ) {
       addChatUsers([user.email, input]);
     }
   };
