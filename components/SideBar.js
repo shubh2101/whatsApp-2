@@ -44,7 +44,7 @@ function SideBar() {
   return (
     <Container>
       <Header>
-        <UserAvatar />
+        <UserAvatar src={user.photoURL}/>
         <IconsContainer>
           <IconButton>
             <ChatIcon />

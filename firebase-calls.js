@@ -9,11 +9,11 @@ import {
 } from "firebase/firestore";
 import { db } from "./firebase";
 
-export const addUsers = async (email, lastSeen, photoUrl, userId) => {
+export const addUsers = async (email, lastSeen, photoURL, userId) => {
   const userData = {
     email,
     lastSeen,
-    photoUrl,
+    photoURL,
     userId,
   };
   await setDoc(doc(db, "users", userId), userData, { merge: true });
